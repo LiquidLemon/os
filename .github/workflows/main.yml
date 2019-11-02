@@ -1,0 +1,12 @@
+name: CI
+
+on: [push]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v1
+    - name: Build the system
+      run: docker run -v ${PWD}:/src liquidlemon/os-builder /usr/bin/make -C /src
