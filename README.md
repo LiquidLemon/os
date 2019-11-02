@@ -1,4 +1,4 @@
-# os ![](https://github.com/liquidlemon/os/workflows/CI/badge.svg)
+# os ![](https://github.com/LiquidLemon/os/workflows/CI/badge.svg)
 
 ## Building
 
