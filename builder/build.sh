@@ -1,9 +1,4 @@
 #!/bin/bash
-set -eux
-
-export PREFIX=/usr/local/cross
-export TARGET=i686-elf
-export PATH=$PREFIX/bin:$PATH
 
 mkdir -p /build/binutils
 cd /build/binutils
