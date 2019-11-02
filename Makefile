@@ -1,16 +1,40 @@
-BIN:=$(realpath tools/bin)
+export HOSTARCH:=i386
 
-export CFLAGS?=-O2 -g
-export CC=$(BIN)/i686-elf-gcc
+BIN:=$(CURDIR)/tools/bin
+export SYSROOT:=$(CURDIR)/sysroot
+export DESTDIR:=/usr
+
+export CC:=$(BIN)/i686-elf-gcc --sysroot=$(SYSROOT)
+export CFLAGS?=-O2 -g -I$(SYSROOT)/usr/include
 
 PROJECTS:=libc kernel
 
-.PHONY: all $(PROJECTS) clean
+.PHONY: all $(PROJECTS) clean install run debug gdb
 
-all: $(PROJECTS)
+all: headers $(PROJECTS)
+
+headers:
+	for project in $(PROJECTS); do \
+		$(MAKE) -C $$project install-headers; \
+	done
 
 $(PROJECTS):
 	$(MAKE) -C $@
 
+run:
+	qemu-system-i386 -kernel kernel/build/myos.kernel
+
+debug:
+	qemu-system-i386 -s -S -kernel kernel/build/myos.kernel
+
+gdb:
+	gdb -symbols kernel/build/myos.kernel -ex "target remote localhost:1234"
+
 clean:
-	rm -r $(shell find $(PROJECTS) -name build -type d)
+	for project in $(PROJECTS); do \
+		$(MAKE) -C $$project clean; \
+	done
+	rm -rf sysroot
+
+install:
+	$(MAKE) -C libc install
