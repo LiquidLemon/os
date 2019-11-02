@@ -4,10 +4,10 @@ BIN:=$(CURDIR)/tools/bin
 export SYSROOT:=$(CURDIR)/sysroot
 export DESTDIR:=/usr
 
-export CC:=$(BIN)/i686-elf-gcc --sysroot=$(SYSROOT)
+export CC:=i686-elf-gcc --sysroot=$(SYSROOT)
 export CFLAGS?=-O2 -g -I$(SYSROOT)/usr/include
-export AR:=$(BIN)/i686-elf-ar
-export AS:=$(BIN)/i686-elf-as
+export AR:=i686-elf-ar
+export AS:=i686-elf-as
 
 PROJECTS:=libc kernel
 
