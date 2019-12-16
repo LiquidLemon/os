@@ -11,8 +11,6 @@ static void gdt_set_gate(size_t, uint32_t, uint32_t, uint8_t, uint8_t);
 gdt_entry gdt_entries[5];
 gdt_pointer gdt_ptr;
 
-// TODO: add idt
-
 void init_gdt(void) {
   gdt_ptr.limit = sizeof(gdt_entry) * 5 - 1;
   gdt_ptr.base = (uint32_t) &gdt_entries;
