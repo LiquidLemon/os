@@ -1,8 +1,11 @@
 #include <stdio.h>
 
+#include <kernel/gdt.h>
 #include <kernel/tty.h>
 
 void kmain(void) {
+  init_gdt();
+
   terminal_init();
   printf(
       "            (_)         \n"
@@ -11,5 +14,6 @@ void kmain(void) {
       "| | | | (_) | | (_|  __/\n"
       "|_| |_|\\___/|_|\\___\\___|\n"
   );
+
 }
 
