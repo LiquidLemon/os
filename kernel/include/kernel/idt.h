@@ -24,6 +24,7 @@ typedef struct
 void init_idt();
 
 // These extern directives let us access the addresses of our ASM ISR handlers.
+
 extern void isr0();
 extern void isr1();
 extern void isr2();

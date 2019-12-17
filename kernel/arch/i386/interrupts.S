@@ -51,7 +51,22 @@ ISR_NOERRCODE 31
 isr_common_stub:
   pusha
 
+  movw %ds, %ax
+  pushl %eax
+
+  movw $0x10, %ax
+  movw %ax, %ds
+  movw %ax, %es
+  movw %ax, %fs
+  movw %ax, %gs
+
   call isr_handler
+
+  popl %eax
+  movw %ax, %ds
+  movw %ax, %es
+  movw %ax, %fs
+  movw %ax, %gs
 
   popa
   addl $8, %esp

@@ -12,6 +12,8 @@ static bool print(const char* data, size_t length) {
   return true;
 }
 
+static int print_int(int);
+
 int printf(const char* restrict format, ...) {
   va_list parameters;
   va_start(parameters, format);
@@ -61,6 +63,10 @@ int printf(const char* restrict format, ...) {
       if (!print(str, len))
         return -1;
       written += len;
+    } else if (*format == 'd') {
+      format++;
+      int num = va_arg(parameters, int);
+      written += print_int(num);
     } else {
       format = format_begun_at;
       size_t len = strlen(format);
@@ -77,4 +83,25 @@ int printf(const char* restrict format, ...) {
 
   va_end(parameters);
   return written;
+}
+
+static int print_int(int num) {
+  int count = 0;
+
+  if (num < 0) {
+    putchar('-');
+    num = -num;
+    count++;
+  }
+
+  int rest = num / 10;
+  int digit = num % 10;
+
+  if (rest != 0) {
+    count += print_int(rest);
+  }
+
+  putchar(digit + '0');
+  count++;
+  return count;
 }

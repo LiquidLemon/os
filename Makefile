@@ -5,7 +5,7 @@ export SYSROOT:=$(CURDIR)/sysroot
 export DESTDIR:=/usr
 
 export CC:=i686-elf-gcc --sysroot=$(SYSROOT)
-export CFLAGS?=-O2 -g -I$(SYSROOT)/usr/include
+export CFLAGS?=-O0 -g -I$(SYSROOT)/usr/include
 export AR:=i686-elf-ar
 export AS:=i686-elf-as
 
@@ -30,7 +30,7 @@ debug:
 	qemu-system-i386 -s -S -kernel kernel/build/myos.kernel
 
 gdb:
-	gdb -symbols kernel/build/myos.kernel -ex "target remote localhost:1234"
+	gdb -symbols kernel/build/myos.kernel -tui -ex "target remote localhost:1234"
 
 clean:
 	for project in $(PROJECTS); do \
