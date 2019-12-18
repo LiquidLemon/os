@@ -33,6 +33,12 @@ void terminal_scroll(void) {
         2 * VGA_WIDTH
     );
   }
+
+  memset(
+      &terminal_buffer[(VGA_HEIGHT - 1) * VGA_WIDTH],
+      0,
+      2 * VGA_WIDTH
+  );
 }
 
 void terminal_init(void) {

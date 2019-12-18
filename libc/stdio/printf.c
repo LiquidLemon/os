@@ -13,6 +13,7 @@ static bool print(const char* data, size_t length) {
 }
 
 static int print_int(int);
+static int print_hex(unsigned);
 
 int printf(const char* restrict format, ...) {
   va_list parameters;
@@ -67,6 +68,10 @@ int printf(const char* restrict format, ...) {
       format++;
       int num = va_arg(parameters, int);
       written += print_int(num);
+    } else if (*format == 'x') {
+      format++;
+      unsigned num = va_arg(parameters, unsigned);
+      written += print_hex(num);
     } else {
       format = format_begun_at;
       size_t len = strlen(format);
@@ -102,6 +107,23 @@ static int print_int(int num) {
   }
 
   putchar(digit + '0');
+  count++;
+  return count;
+}
+
+static const char *hex_digits = "0123456789ABCDEF";
+
+static int print_hex(unsigned num) {
+  int count = 0;
+
+  unsigned rest = num >> 4;
+  unsigned digit = num & 0xF;
+
+  if (rest != 0) {
+    count += print_hex(rest);
+  }
+
+  putchar(hex_digits[digit]);
   count++;
   return count;
 }

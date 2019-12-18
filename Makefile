@@ -24,10 +24,10 @@ $(PROJECTS):
 	$(MAKE) -C $@
 
 run:
-	qemu-system-i386 -kernel kernel/build/myos.kernel
+	qemu-system-i386 -no-reboot -kernel kernel/build/myos.kernel
 
 debug:
-	qemu-system-i386 -s -S -kernel kernel/build/myos.kernel
+	qemu-system-i386 -no-reboot -s -S -kernel kernel/build/myos.kernel
 
 gdb:
 	gdb -symbols kernel/build/myos.kernel -tui \
