@@ -4,6 +4,7 @@
 #include <string.h>
 
 #include <kernel/shell.h>
+#include <kernel/date.h>
 
 #define MAX_INPUT 10
 
@@ -27,8 +28,27 @@ void help_command(void) {
   printf("date - print the current time\n");
 }
 
+void date_command(void) {
+  datetime date = get_date();
+  printf(
+      "%d-%s%d-%s%d %s%d:%s%d:%s%d\n",
+      date.year,
+      date.month > 9 ? "" : "0",
+      date.month,
+      date.day > 9 ? "" : "0",
+      date.day,
+      date.hour > 9 ? "" : "0",
+      date.hour,
+      date.minute > 9 ? "" : "0",
+      date.minute,
+      date.second > 9 ? "" : "0",
+      date.second
+  );
+}
+
 command_entry commands[] = {
   { "help", help_command },
+  { "date", date_command },
   { "", NULL }
 };
 
@@ -64,7 +84,9 @@ void shell_append(char c) {
     }
   } else if (c == '\n') {
     putchar('\n');
-    run_command(input_buffer);
+    if (input_len > 0) {
+      run_command(input_buffer);
+    }
     restart_prompt();
   } else if (c == '\b') {
     if (input_len > 0) {
