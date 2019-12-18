@@ -30,7 +30,10 @@ debug:
 	qemu-system-i386 -s -S -kernel kernel/build/myos.kernel
 
 gdb:
-	gdb -symbols kernel/build/myos.kernel -tui -ex "target remote localhost:1234"
+	gdb -symbols kernel/build/myos.kernel -tui \
+	  -ex "dir kernel" \
+	  -ex "dir libc" \
+	  -ex "target remote localhost:1234"
 
 clean:
 	for project in $(PROJECTS); do \

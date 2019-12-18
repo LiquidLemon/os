@@ -15,6 +15,15 @@
   jmp isr_common_stub
 .endm
 
+.macro IRQ num=0, entry_no=0
+.global irq\num
+  irq\num:
+  cli
+  push $0
+  push $\entry_no
+  jmp irq_common_stub
+.endm
+
 ISR_NOERRCODE 0
 ISR_NOERRCODE 1
 ISR_NOERRCODE 2
@@ -48,6 +57,23 @@ ISR_NOERRCODE 29
 ISR_ERRCODE 30
 ISR_NOERRCODE 31
 
+IRQ 0 32
+IRQ 1 33
+IRQ 2 34
+IRQ 3 35
+IRQ 4 36
+IRQ 5 37
+IRQ 6 38
+IRQ 7 39
+IRQ 8 40
+IRQ 9 41
+IRQ 10 42
+IRQ 11 43
+IRQ 12 44
+IRQ 13 45
+IRQ 14 46
+IRQ 15 47
+
 isr_common_stub:
   pusha
 
@@ -61,6 +87,31 @@ isr_common_stub:
   movw %ax, %gs
 
   call isr_handler
+
+  popl %eax
+  movw %ax, %ds
+  movw %ax, %es
+  movw %ax, %fs
+  movw %ax, %gs
+
+  popa
+  addl $8, %esp
+  sti
+  iret
+
+irq_common_stub:
+  pusha
+
+  movw %ds, %ax
+  pushl %eax
+
+  movw $0x10, %ax
+  movw %ax, %ds
+  movw %ax, %es
+  movw %ax, %fs
+  movw %ax, %gs
+
+  call irq_handler
 
   popl %eax
   movw %ax, %ds

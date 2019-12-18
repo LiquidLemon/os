@@ -24,7 +24,7 @@ _start:
   call _init
   call kmain
 
-  cli
+  sti
 1:
   hlt
   jmp 1b
