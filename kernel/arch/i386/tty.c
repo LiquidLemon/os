@@ -87,3 +87,17 @@ void terminal_write(const char *data, size_t size) {
     terminal_putchar(data[i]);
   }
 }
+
+void terminal_delete_char() {
+  if (terminal_column == 0 && terminal_row > 0) {
+    terminal_row--;
+    terminal_column = VGA_WIDTH - 1;
+  }
+
+  if (terminal_column > 0) {
+    terminal_column--;
+  }
+
+  terminal_buffer[terminal_row * VGA_WIDTH + terminal_column] = vga_entry(' ', terminal_color);
+  update_cursor();
+}

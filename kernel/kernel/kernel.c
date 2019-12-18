@@ -4,6 +4,7 @@
 #include <kernel/idt.h>
 #include <kernel/timer.h>
 #include <kernel/keyboard.h>
+#include <kernel/shell.h>
 #include <kernel/tty.h>
 
 void kmain(void) {
@@ -26,12 +27,7 @@ void kmain(void) {
   init_keyboard();
   printf(" done.\n");
 
-  printf(
-      "            (_)         \n"
-      " _ __   ___  _  ___ ___ \n"
-      "| '_ \\ / _ \\| |/ __/ _ \\\n"
-      "| | | | (_) | | (_|  __/\n"
-      "|_| |_|\\___/|_|\\___\\___|\n"
-  );
+  printf("Initializing shell...\n");
+  init_shell();
 }
 
