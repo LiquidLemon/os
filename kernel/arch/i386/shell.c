@@ -32,12 +32,19 @@ void help_command(void) {
 void date_command(void) {
   datetime date = get_date();
   printf(
-      "%d-%s%d-%s%d %s%d:%s%d:%s%d\n",
+      "%d-%s%d-%s%d\n",
       date.year,
       date.month > 9 ? "" : "0",
       date.month,
       date.day > 9 ? "" : "0",
-      date.day,
+      date.day
+  );
+}
+
+void time_command(void) {
+  datetime date = get_date();
+  printf(
+      "%s%d:%s%d:%s%d\n",
       date.hour > 9 ? "" : "0",
       date.hour,
       date.minute > 9 ? "" : "0",
@@ -54,6 +61,7 @@ void drives_command(void) {
 command_entry commands[] = {
   { "help", help_command },
   { "date", date_command },
+  { "time", time_command },
   { "drives", drives_command },
   { "", NULL }
 };
