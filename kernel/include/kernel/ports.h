@@ -40,4 +40,28 @@ static inline void io_wait(void) {
   asm volatile ("outb %%al, $0x80" :: "a"(0));
 }
 
+static inline void outw(uint16_t port, uint16_t val)
+{
+  asm volatile ("outw %1, %0" : : "dN" (port), "a" (val));
+}
+
+static inline uint16_t inw(uint16_t port)
+{
+  uint32_t ret;
+  asm volatile("inw %1, %0" : "=a" (ret) : "dN" (port));
+  return ret;
+}
+
+static inline void outl(uint16_t port, uint32_t val)
+{
+  asm volatile ("outl %1, %0" : : "dN" (port), "a" (val));
+}
+
+static inline uint32_t inl(uint16_t port)
+{
+  uint32_t ret;
+  asm volatile("inl %1, %0" : "=a" (ret) : "dN" (port));
+  return ret;
+}
+
 #endif

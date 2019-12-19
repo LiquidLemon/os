@@ -5,6 +5,7 @@
 #include <kernel/timer.h>
 #include <kernel/keyboard.h>
 #include <kernel/shell.h>
+#include <kernel/ata.h>
 #include <kernel/tty.h>
 
 void kmain(void) {
@@ -21,6 +22,10 @@ void kmain(void) {
 
   printf("Initializing timer...");
   init_timer(50);
+  printf(" done.\n");
+
+  printf("Initializing IDE...");
+  ide_init(0x1F0, 0x3F6, 0x170, 0x376, 0);
   printf(" done.\n");
 
   printf("Initializing keyboard...");

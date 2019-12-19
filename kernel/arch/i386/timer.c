@@ -16,15 +16,20 @@
 #define PIT_CMD_BINARY 0b00000000
 
 uint32_t counter = 0;
+uint16_t divisor;
+uint32_t ticks_to_wait = 0;
 
 void timer_callback(registers regs __attribute__((unused))) {
   counter++;
+  if (ticks_to_wait > 0) {
+    ticks_to_wait--;
+  }
 }
 
 void init_timer(uint32_t frequency) {
   register_interrupt_handler(IRQ0, timer_callback);
 
-  uint16_t divisor = 1193180 / frequency;
+  divisor = 1193180 / frequency;
 
   outb(PIT_COMMAND, PIT_CMD_CH0 | PIT_CMD_LOHI | PIT_CMD_RATE | PIT_CMD_BINARY);
   io_wait();
@@ -36,4 +41,14 @@ void init_timer(uint32_t frequency) {
   io_wait();
   outb(PIT_CH0, high);
   io_wait();
+}
+
+void sleep(uint32_t ms) {
+  ticks_to_wait = ms/(10000.0/divisor) + 1;
+
+  asm ("sti");
+
+  while (ticks_to_wait != 0) {
+    asm ("hlt");
+  }
 }

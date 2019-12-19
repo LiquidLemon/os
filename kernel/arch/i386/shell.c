@@ -5,6 +5,7 @@
 
 #include <kernel/shell.h>
 #include <kernel/date.h>
+#include <kernel/ata.h>
 
 #define MAX_INPUT 10
 
@@ -46,9 +47,14 @@ void date_command(void) {
   );
 }
 
+void drives_command(void) {
+  ide_print_summary();
+}
+
 command_entry commands[] = {
   { "help", help_command },
   { "date", date_command },
+  { "drives", drives_command },
   { "", NULL }
 };
 
