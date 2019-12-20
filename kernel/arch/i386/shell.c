@@ -25,8 +25,10 @@ typedef struct {
 } command_entry;
 
 void help_command(void) {
-  printf("help - print this list\n");
-  printf("date - print the current time\n");
+  printf("help   - print this list\n");
+  printf("date   - print the current date\n");
+  printf("time   - print the current time\n");
+  printf("drives - list attached drives\n");
 }
 
 void date_command(void) {
