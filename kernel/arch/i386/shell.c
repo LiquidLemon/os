@@ -2,15 +2,19 @@
 #include <stdio.h>
 #include <stddef.h>
 #include <string.h>
+#include <stdbool.h>
 
+#include <kernel/tty.h>
 #include <kernel/shell.h>
 #include <kernel/date.h>
 #include <kernel/ata.h>
 
-#define MAX_INPUT 10
+#define MAX_INPUT 256
 
 char input_buffer[MAX_INPUT];
 size_t input_len;
+
+bool disabled = false;
 
 void restart_prompt() {
   input_len = 0;
@@ -29,6 +33,13 @@ void help_command(void) {
   printf("date   - print the current date\n");
   printf("time   - print the current time\n");
   printf("drives - list attached drives\n");
+  printf("exit   - exit the system\n");
+}
+
+void exit_command(void) {
+  disabled = true;
+  terminal_init();
+  printf("It is now safe to turn off your computer\n");
 }
 
 void date_command(void) {
@@ -65,6 +76,7 @@ command_entry commands[] = {
   { "date", date_command },
   { "time", time_command },
   { "drives", drives_command },
+  { "exit", exit_command },
   { "", NULL }
 };
 
@@ -93,6 +105,9 @@ void init_shell() {
 }
 
 void shell_append(char c) {
+  if (disabled) {
+    return;
+  }
   if (isprint(c)) {
     if (input_len + 1 < MAX_INPUT) {
       input_buffer[input_len++] = c;
@@ -103,7 +118,10 @@ void shell_append(char c) {
     if (input_len > 0) {
       run_command(input_buffer);
     }
-    restart_prompt();
+
+    if (!disabled) {
+      restart_prompt();
+    }
   } else if (c == '\b') {
     if (input_len > 0) {
       terminal_delete_char();
